@@ -1,0 +1,2 @@
+# pkg
+Golang shared packages
