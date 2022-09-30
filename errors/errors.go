@@ -8,3 +8,9 @@ func Must(err error) {
 		log.G().Fatalw("fatal error", "err", err)
 	}
 }
+
+// MustV like Must but returns a value
+func MustV[T any](v T, err error) T {
+	Must(err)
+	return v
+}

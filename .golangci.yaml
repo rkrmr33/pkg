@@ -3,6 +3,8 @@
 
 # options for analysis running
 run:
+  go: "1.18"
+
   # default concurrency is a available CPU number
   concurrency: 4
 
@@ -34,7 +36,7 @@ linters-settings:
   gocyclo:
     # minimal code complexity to report, 30 by default (but we recommend 10-20)
     min-complexity: 18
-  
+
   gci:
     local-prefixes: github.com/rkrmr33
 
