@@ -48,6 +48,8 @@ func init() {
 }
 
 // Build builds a new logger from a config. If conf is nil, uses default configuration.
+// This will set the root logger which is returned from G(). If you do not want to set
+// the root logger you should use conf.Build() instead.
 func Build(conf *Config) (*Logger, error) {
 	var (
 		err error
@@ -73,6 +75,18 @@ func Build(conf *Config) (*Logger, error) {
 	logger = &Logger{l.Sugar()}
 
 	return logger, nil
+}
+
+// Build constructs a new logger from the config
+func (c *Config) Build() (*Logger, error) {
+	zc, err := c.parseZap()
+	if err != nil {
+		return nil, err
+	}
+
+	l, err := zc.Build()
+
+	return &Logger{l.Sugar()}, err
 }
 
 // AddFlags binds the logger configuration flags to the provided flag set and returns a
