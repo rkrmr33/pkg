@@ -8,3 +8,13 @@ func Must(err error) {
 		log.G().Fatalw("fatal error", "err", err)
 	}
 }
+
+// Drop drops the first return falue and returns the second one
+func Drop[F any, T any](f F, last T) T {
+	return last
+}
+
+// Drop2 drops the first two return values and returns the last one
+func Drop2[F any, S any, T any](f F, s S, last T) T {
+	return last
+}

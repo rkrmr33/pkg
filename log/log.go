@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -83,6 +84,31 @@ func AddFlags(fs *pflag.FlagSet) *Config {
 	fs.StringVar(&conf.Format, "log-format", "console", "one of: json|console")
 
 	return conf
+}
+
+// PersistentSetup set up the logger on the root command, adding the required flags
+// and calling Build() in the command PreRunE function.
+func PersistentSetup(cmd *cobra.Command) *Config {
+	var (
+		config *Config
+		orgFn  = cmd.PersistentPreRunE
+	)
+
+	cmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
+		if _, err := Build(config); err != nil {
+			return err
+		}
+
+		if orgFn != nil {
+			return orgFn(cmd, args)
+		}
+
+		return nil
+	}
+
+	config = AddFlags(cmd.PersistentFlags())
+
+	return config
 }
 
 // Get returns the default configured logger. You may also use its shorter alias: @G()

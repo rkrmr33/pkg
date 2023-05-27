@@ -1,4 +1,4 @@
-VERSION := v0.0.5
+VERSION := v0.0.6
 
 ifndef GOBIN
 ifndef GOPATH
@@ -10,13 +10,8 @@ $(error GOBIN is not set, please make sure you set your GOBIN correctly!)
 endif
 endif
 
-.PHONY: gen
-gen: $(GOBIN)/mockery 
-	@echo generating mocks...
-	@go generate ./...
-
 .PHONY: pre-push
-pre-push: gen lint test
+pre-push: lint test
 
 .PHONY: release
 release: check-worktree lint test
