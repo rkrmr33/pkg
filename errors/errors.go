@@ -9,6 +9,12 @@ func Must(err error) {
 	}
 }
 
+// MustV like Must but returns the value
+func MustV[T any](val T, err error) T {
+	Must(err)
+	return val
+}
+
 // Drop drops the first return falue and returns the second one
 func Drop[F any, T any](f F, last T) T {
 	return last
