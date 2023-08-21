@@ -1,6 +1,8 @@
 package errors
 
-import "github.com/rkrmr33/pkg/log"
+import (
+	"github.com/rkrmr33/pkg/log"
+)
 
 // Must calls log.Fatal in case err is not nil
 func Must(err error) {
@@ -23,4 +25,14 @@ func Drop[F any, T any](f F, last T) T {
 // Drop2 drops the first two return values and returns the last one
 func Drop2[F any, S any, T any](f F, s S, last T) T {
 	return last
+}
+
+type ErrorLogger interface {
+	Error(error, string, ...interface{})
+}
+
+func HandlePanic(l ErrorLogger) {
+	if err, ok := recover().(error); err != nil && ok {
+		l.Error(err, "recovered")
+	}
 }
